@@ -64,7 +64,7 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            // Since the maximum achievable pp is low and only depends on the aim skill, we multiply the overall multiplier to a comfortable number
+            // Since the maximum achievable pp is low, we multiply the overall multiplier to a comfortable number
             multiplier *= Math.max(1, 1.27 - 0.02 * (effectiveMissCount  * (effectiveMissCount / 15) / 2));
             
             // Graph: https://www.desmos.com/calculator/bc9eybdthb
@@ -196,10 +196,6 @@ public class PerformanceCalculator {
 
     private double calculateSpeedValue() {
 
-        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            speedValue *= 1.1;
-        }
-
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
@@ -226,6 +222,10 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
+
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            speedValue *= 1.1;
+        } 
 
         // Calculate accuracy assuming the worst case scenario.
         double relevantTotalDiff = getTotalHits() - difficultyAttributes.speedNoteCount;
