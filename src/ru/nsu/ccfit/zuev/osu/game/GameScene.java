@@ -808,7 +808,6 @@ public class GameScene implements IUpdateHandler, GameObjectListener,
         stat = new StatisticV2();
         stat.setMod(ModMenu.getInstance().getMod());
         stat.canFail = !stat.getMod().contains(GameMod.MOD_NOFAIL)
-                && !stat.getMod().contains(GameMod.MOD_RELAX)
                 && !stat.getMod().contains(GameMod.MOD_AUTOPILOT)
                 && !stat.getMod().contains(GameMod.MOD_AUTO);
 
