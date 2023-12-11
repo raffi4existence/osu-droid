@@ -62,9 +62,21 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_NOFAIL)) {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
+
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.025;
+            // Since the maximum achievable pp is low and only depends on the aim skill, we multiply the overall multiplier to a comfortable number
+            multiplier *= Math.max(1, 1.27 - 0.02 * (effectiveMissCount  * (effectiveMissCount / 15) / 2));
+            
+            // Graph: https://www.desmos.com/calculator/bc9eybdthb
+            // We use OD13.3 as maximum since it's the value at which great hit window becomes 0.
+            double okMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0.00390625) : 1);
+            double mehMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0.0078125) : 1);
+
+            // As we're adding 100s and 50s to an approximated number of combo breaks, the result can be higher
+            // than total hits in specific scenarios (which breaks some calculations),  so we need to clamp it.
+            effectiveMissCount = Math.min(effectiveMissCount + countOk * okMultiplier + countMeh * mehMultiplier, getTotalHits());
         }
+
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -74,9 +86,9 @@ public class PerformanceCalculator {
         attributes.flashlight = calculateFlashlightValue();
 
         attributes.total = Math.pow(
-                Math.pow(attributes.aim, 1.1125) +
-                        Math.pow(attributes.speed, 1.1125) +
-                        Math.pow(attributes.accuracy, 1.075) +
+                Math.pow(attributes.aim, 1.1) +
+                        Math.pow(attributes.speed, 1.1) +
+                        Math.pow(attributes.accuracy, 1.1) +
                         Math.pow(attributes.flashlight, 1.1),
                 1 / 1.1
         ) * multiplier;
@@ -113,13 +125,6 @@ public class PerformanceCalculator {
     }
 
     /**
-     * Gets the amount of hits that were successfully done.
-     */
-    private int getTotalSuccessfulHits() {
-        return countGreat + countOk + countMeh;
-    }
-
-    /**
      * Resets this calculator to its original state.
      */
     private void resetDefaults() {
@@ -149,13 +154,26 @@ public class PerformanceCalculator {
 
         aimValue *= getComboScalingFactor();
 
-        // We want to give more reward for lower AR when it comes to aim and HD. This nerfs high AR and buffs lower AR.
-        if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
-            aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
+        if (!difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            // AR scaling
+            double approachRateFactor = 0;
+            if (difficultyAttributes.approachRate > 10.33) {
+                approachRateFactor += 0.3 * (difficultyAttributes.approachRate - 10.33);
+            } else if (difficultyAttributes.approachRate < 8) {
+                approachRateFactor += 0.05 * (8 - difficultyAttributes.approachRate);
+            }
+
+            // Buff for longer maps with high AR.
+            aimValue *= 1 + approachRateFactor * lengthBonus;
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            aimValue *= 1.15;
+            aimValue *= 1.25;
+        }
+
+        // We want to give more reward for lower AR when it comes to aim and HD. This nerfs high AR and buffs lower AR.
+        if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
+            aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -178,12 +196,16 @@ public class PerformanceCalculator {
 
     private double calculateSpeedValue() {
 
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            speedValue *= 1.1;
+        }
+
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
         double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
         if (getTotalHits() > 2000) {
-            lengthBonus += Math.log10(getTotalSuccessfulHits() / 2000d) * 0.5;
+            lengthBonus += Math.log10(getTotalHits() / 2000d) * 0.5;
         }
 
         speedValue *= lengthBonus;
@@ -203,9 +225,6 @@ public class PerformanceCalculator {
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
-        }
-        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            speedValue *= 1.1;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -231,7 +250,7 @@ public class PerformanceCalculator {
         int circleCount = difficultyAttributes.hitCircleCount;
 
         if (circleCount > 0) {
-            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6));
+            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6d));
         }
 
         // Lots of arbitrary values from testing.
@@ -247,8 +266,10 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
         }
+
+        // with the precise mod, the accuracy value is much more worth than having no pp rewarding
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            accuracyValue *= 1.275;
+            accuracyValue *= 2.5;
         }
 
         return accuracyValue;
@@ -303,4 +324,4 @@ public class PerformanceCalculator {
     private double getComboScalingFactor() {
         return difficultyAttributes.maxCombo <= 0 ? 0 : Math.min(Math.pow(scoreMaxCombo, 0.8) / Math.pow(difficultyAttributes.maxCombo, 0.8), 1);
     }
-            }
+    }
