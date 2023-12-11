@@ -62,7 +62,9 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_NOFAIL)) {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
-
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            multiplier *= 1.025;
+        }
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -72,11 +74,11 @@ public class PerformanceCalculator {
         attributes.flashlight = calculateFlashlightValue();
 
         attributes.total = Math.pow(
-                Math.pow(attributes.aim, 1.225) +
-                        Math.pow(attributes.speed, 1.225) +
-                        Math.pow(attributes.accuracy, 1.15) +
+                Math.pow(attributes.aim, 1.1125) +
+                        Math.pow(attributes.speed, 1.1125) +
+                        Math.pow(attributes.accuracy, 1.075) +
                         Math.pow(attributes.flashlight, 1.1),
-                1 / 1.05
+                1 / 1.1
         ) * multiplier;
 
         return attributes;
@@ -111,6 +113,13 @@ public class PerformanceCalculator {
     }
 
     /**
+     * Gets the amount of hits that were successfully done.
+     */
+    private int getTotalSuccessfulHits() {
+        return countGreat + countOk + countMeh;
+    }
+
+    /**
      * Resets this calculator to its original state.
      */
     private void resetDefaults() {
@@ -123,7 +132,8 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
-        
+        double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
+
         // Longer maps are worth more
         double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
         if (getTotalHits() > 2000) {
@@ -142,6 +152,10 @@ public class PerformanceCalculator {
         // We want to give more reward for lower AR when it comes to aim and HD. This nerfs high AR and buffs lower AR.
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
+        }
+
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            aimValue *= 1.15;
         }
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -164,10 +178,12 @@ public class PerformanceCalculator {
 
     private double calculateSpeedValue() {
 
+        double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
+
         // Longer maps are worth more
         double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
         if (getTotalHits() > 2000) {
-            lengthBonus += Math.log10(getTotalHits() / 2000d) * 0.5;
+            lengthBonus += Math.log10(getTotalSuccessfulHits() / 2000d) * 0.5;
         }
 
         speedValue *= lengthBonus;
@@ -187,6 +203,9 @@ public class PerformanceCalculator {
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
+        }
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            speedValue *= 1.1;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -212,7 +231,7 @@ public class PerformanceCalculator {
         int circleCount = difficultyAttributes.hitCircleCount;
 
         if (circleCount > 0) {
-            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6d));
+            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6));
         }
 
         // Lots of arbitrary values from testing.
@@ -228,6 +247,9 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
         }
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            accuracyValue *= 1.275;
+        }
 
         return accuracyValue;
     }
@@ -236,6 +258,8 @@ public class PerformanceCalculator {
         if (!difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             return 0;
         }
+
+        double flashlightValue = Math.pow(difficultyAttributes.flashlightDifficulty, 2) * 25;
 
         if (effectiveMissCount > 0) {
             // Penalize misses by assessing # of misses relative to the total # of objects. Default a 3% reduction for any # of misses.
