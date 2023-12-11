@@ -72,9 +72,9 @@ public class PerformanceCalculator {
         attributes.flashlight = calculateFlashlightValue();
 
         attributes.total = Math.pow(
-                Math.pow(attributes.aim, 1.25) +
-                        Math.pow(attributes.speed, 1.25) +
-                        Math.pow(attributes.accuracy, 1.1) +
+                Math.pow(attributes.aim, 1.225) +
+                        Math.pow(attributes.speed, 1.225) +
+                        Math.pow(attributes.accuracy, 1.15) +
                         Math.pow(attributes.flashlight, 1.1),
                 1 / 1.05
         ) * multiplier;
@@ -123,8 +123,7 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
-        double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
-
+        
         // Longer maps are worth more
         double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
         if (getTotalHits() > 2000) {
@@ -164,8 +163,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
-
-        double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
         double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
@@ -239,8 +236,6 @@ public class PerformanceCalculator {
         if (!difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             return 0;
         }
-
-        double flashlightValue = Math.pow(difficultyAttributes.flashlightDifficulty, 2) * 25;
 
         if (effectiveMissCount > 0) {
             // Penalize misses by assessing # of misses relative to the total # of objects. Default a 3% reduction for any # of misses.
