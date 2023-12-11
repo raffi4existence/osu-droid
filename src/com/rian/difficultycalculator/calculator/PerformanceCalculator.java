@@ -123,23 +123,7 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
-        double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
-
-        // Longer maps are worth more
-        double lengthBonus = 0.95 + 0.4 * Math.min(1, getTotalHits() / 2000d);
-        if (getTotalHits() > 2000) {
-            lengthBonus += Math.log10(getTotalHits() / 2000d) * 0.5;
-        }
-
-        aimValue *= lengthBonus;
-
-        if (effectiveMissCount > 0) {
-            // Penalize misses by assessing # of misses relative to the total # of objects. Default a 3% reduction for any # of misses.
-            aimValue *= 0.97 * Math.pow(1 - Math.pow(effectiveMissCount / getTotalHits(), 0.775), effectiveMissCount);
-        }
-
-        aimValue *= getComboScalingFactor();
-
+        
         // We want to give more reward for lower AR when it comes to aim and HD. This nerfs high AR and buffs lower AR.
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
@@ -164,12 +148,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
-
-        // AR scaling
-        if (difficultyAttributes.approachRate > 10.33) {
-            // Buff for longer maps with high AR.
-            speedValue *= 1 + 0.3 * (difficultyAttributes.approachRate - 10.33) * lengthBonus;
-        }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
