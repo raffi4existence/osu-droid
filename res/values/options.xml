@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="bg_quality_names">
+        <item>Very High</item>
         <item>High</item>
         <item>Medium</item>
         <item>Low</item>
-        <item>Disabled</item>
+	<item>Lower</item>
+	<item>Lowest (Pixelated)</item>
     </string-array>
     <string-array name="bg_quality_values">
         <item>1</item>
         <item>2</item>
         <item>4</item>
-        <item>0</item>
+        <item>8</item>
+	<item>16</item>
+	<item>32</item>
     </string-array>
     <!-- <string-array name="bg_brightness_names">
         <item>100%</item>
