@@ -128,6 +128,7 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
+        
         double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
@@ -144,7 +145,7 @@ public class PerformanceCalculator {
         }
 
         aimValue *= getComboScalingFactor();
-
+        
         if (!difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             // AR scaling
             double approachRateFactor = 0;
@@ -166,6 +167,11 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
+
+        // Since a few players were asking for an increase in aim value in the relax mod, we decided to buff it up for a few
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            aimValue *= 1.45 + (0.5 * Math.max(difficultyAttributes.overallDifficulty, 2.5) / 1.05);
+        } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
