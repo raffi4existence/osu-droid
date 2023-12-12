@@ -66,8 +66,8 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             // Graph: https://www.desmos.com/calculator/bc9eybdthb
             // We use OD13.3 as maximum since it's the value at which great hit window becomes 0.
-            double okMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0.45) : 1);
-            double mehMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 1.25) : 1);
+            double okMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
+            double mehMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
 
             // As we're adding 100s and 50s to an approximated number of combo breaks, the result can be higher
             // than total hits in specific scenarios (which breaks some calculations),  so we need to clamp it.
@@ -171,7 +171,7 @@ public class PerformanceCalculator {
 
         // Since a few players were asking for an increase in aim value in the relax mod, we decided to buff it up for a few
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.45 + (0.5 * Math.max(difficultyAttributes.overallDifficulty, 2.5) / 1.05);
+            aimValue *= 2.15;
         }
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
