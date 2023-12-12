@@ -65,7 +65,7 @@ public class PerformanceCalculator {
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             // Since the maximum achievable pp is low, we multiply the overall multiplier to a comfortable number
-            multiplier *= Math.max(1, 1.277 - 0.002 * (effectiveMissCount  * (effectiveMissCount / 15) / 2));
+            multiplier *= Math.max(1, 1.327 - 0.002 * (effectiveMissCount / 2.5));
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
@@ -77,9 +77,9 @@ public class PerformanceCalculator {
         attributes.flashlight = calculateFlashlightValue();
 
         attributes.total = Math.pow(
-                Math.pow(attributes.aim, 1.1) +
-                        Math.pow(attributes.speed, 1.1) +
-                        Math.pow(attributes.accuracy, 1.1) +
+                Math.pow(attributes.aim, 1.125) +
+                        Math.pow(attributes.speed, 1.125) +
+                        Math.pow(attributes.accuracy, 1.05) +
                         Math.pow(attributes.flashlight, 1.1),
                 1 / 1.1
         ) * multiplier;
