@@ -64,7 +64,7 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            // Graph: https://www.desmos.com/calculator/bc9eybdthb
+            // Original graph with the old equation: https://www.desmos.com/calculator/bc9eybdthb
             // We use OD13.3 as maximum since it's the value at which great hit window becomes 0.
             double okMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
             double mehMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
@@ -169,11 +169,6 @@ public class PerformanceCalculator {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Since a few players were asking for an increase in aim value in the relax mod, we decided to buff it up for a few
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 2.15;
-        }
-
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
 
@@ -193,9 +188,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            return 0;
-        }
 
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
@@ -241,9 +233,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateAccuracyValue() {
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            return 0;
-        }
 
         // This percentage only considers HitCircles of any value - in this part of the calculation we focus on hitting the timing hit window.
         double betterAccuracyPercentage = 0;
