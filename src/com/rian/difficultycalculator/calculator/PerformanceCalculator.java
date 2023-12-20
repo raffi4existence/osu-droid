@@ -239,7 +239,7 @@ public class PerformanceCalculator {
         int circleCount = difficultyAttributes.hitCircleCount;
 
         if (circleCount > 0) {
-            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6d));
+            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6));
         }
 
         // Lots of arbitrary values from testing.
