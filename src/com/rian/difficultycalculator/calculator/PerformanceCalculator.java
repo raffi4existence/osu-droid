@@ -64,14 +64,7 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            // Original graph with the old equation: https://www.desmos.com/calculator/bc9eybdthb
-            // We use OD13.3 as maximum since it's the value at which great hit window becomes 0.
-            double okMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
-            double mehMultiplier = Math.max(0, difficultyAttributes.overallDifficulty > 0 ? 1 - Math.pow(difficultyAttributes.overallDifficulty / 13.33, 0) : 1);
-
-            // As we're adding 100s and 50s to an approximated number of combo breaks, the result can be higher
-            // than total hits in specific scenarios (which breaks some calculations),  so we need to clamp it.
-            effectiveMissCount = Math.min(effectiveMissCount + countOk * okMultiplier + countMeh * mehMultiplier, getTotalHits());
+            multiplier *= 3;
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
