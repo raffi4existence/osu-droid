@@ -3061,7 +3061,7 @@ public class GameScene implements IUpdateHandler, GameObjectListener,
             time = ((HitObjectWithDuration) object).getEndTime();
         }
 
-        ppText.setText(String.format(Locale.ENGLISH, "%.2fDRPP", getPPAtTime(time)));
+        ppText.setText(String.format(Locale.ENGLISH, "%.2fpp", getPPAtTime(time)));
     }
 
     private double getPPAtTime(double time) {
