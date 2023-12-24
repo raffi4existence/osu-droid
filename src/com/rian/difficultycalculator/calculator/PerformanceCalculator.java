@@ -67,6 +67,11 @@ public class PerformanceCalculator {
             multiplier *= 1.45;
         }
 
+        // Give rewards for the precise mod since it doesn't have any in the original osu!droid
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            multiplier *= 1.275;
+        }
+
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -151,7 +156,7 @@ public class PerformanceCalculator {
 
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.45;
+            aimValue *= 1.475;
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -203,7 +208,7 @@ public class PerformanceCalculator {
 
         // Give stamina buff with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
-            speedValue *= 1.575;
+            speedValue *= 1.65;
         }
 
         // Calculate accuracy assuming the worst case scenario.
