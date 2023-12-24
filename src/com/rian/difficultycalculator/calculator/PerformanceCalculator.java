@@ -144,23 +144,15 @@ public class PerformanceCalculator {
 
         aimValue *= getComboScalingFactor();
 
-        if (!difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            // AR scaling
-            double approachRateFactor = 0;
-            if (difficultyAttributes.approachRate > 10.33) {
-                approachRateFactor += 0.3 * (difficultyAttributes.approachRate - 10.33);
-            } else if (difficultyAttributes.approachRate < 8) {
-                approachRateFactor += 0.05 * (8 - difficultyAttributes.approachRate);
-            }
-
-            // Buff for longer maps with high AR.
-            aimValue *= 1 + approachRateFactor * lengthBonus;
-        }
-
         // We want to give more reward for lower AR when it comes to aim and HD. This nerfs high AR and buffs lower AR.
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
+
+        // The longer the circle or slider gap, the higher the pp
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            aimValue *= 1.45;
+        } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
@@ -209,6 +201,11 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
+        // Give stamina buff with relax
+        if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
+            speedValue *= 1.575;
+        }
+
         // Calculate accuracy assuming the worst case scenario.
         double relevantTotalDiff = getTotalHits() - difficultyAttributes.speedNoteCount;
         double relevantCountGreat = Math.max(0, countGreat - relevantTotalDiff);
@@ -247,6 +244,11 @@ public class PerformanceCalculator {
         }
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
+        }
+
+        // Give a debuff for accuracy since it only requires aim
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            accuracyValue *= 0.8775;
         }
 
         return accuracyValue;
