@@ -64,7 +64,7 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.45;
+            multiplier *= 2.25;
         }
 
         // Give rewards for the precise mod since it doesn't have any in the original osu!droid
