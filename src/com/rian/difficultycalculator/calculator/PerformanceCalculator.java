@@ -156,7 +156,7 @@ public class PerformanceCalculator {
 
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.475;
+            aimValue *= 1.525;
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -208,7 +208,7 @@ public class PerformanceCalculator {
 
         // Give stamina buff with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
-            speedValue *= 1.65;
+            speedValue *= 1.675;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -253,7 +253,7 @@ public class PerformanceCalculator {
 
         // Give a debuff for accuracy since it only requires aim
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.8775;
+            accuracyValue *= 0.55;
         }
 
         return accuracyValue;
@@ -297,7 +297,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        countOk + countMeh + countMiss
+                        (countOk + countMeh + countMiss) / 2
                 );
             }
         }
