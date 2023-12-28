@@ -68,7 +68,7 @@ public class PerformanceCalculator {
         }
 
         // Since the Double Time mod doesn't have an overall multiplier with aim and speed buffs, we slightly buff it up
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
             multiplier *= 1.125;
         }
 
