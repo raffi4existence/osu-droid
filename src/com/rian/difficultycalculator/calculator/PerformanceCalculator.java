@@ -64,12 +64,12 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 2;
+            multiplier *= 1.9;
         }
 
         // Since the Double Time mod doesn't have an overall multiplier with aim and speed buffs, we slightly buff it up
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.15;
+            multiplier *= 1.125;
         }
 
         // Give rewards for the precise mod since it doesn't have any in the original osu!droid
@@ -161,7 +161,7 @@ public class PerformanceCalculator {
 
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.35;
+            aimValue *= 1.3;
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -211,9 +211,9 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Give stamina buff with relax
-        if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
-            speedValue *= 1.6;
+        // Give speed buff with relax
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            speedValue *= 1.55;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -258,7 +258,7 @@ public class PerformanceCalculator {
 
         // Give a debuff for accuracy since it only requires aim
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.5;
+            accuracyValue *= 0.45;
         }
 
         return accuracyValue;
@@ -302,7 +302,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        (countOk + countMeh + countMiss) / 2
+                        (countOk + countMeh + countMiss) / 8
                 );
             }
         }
