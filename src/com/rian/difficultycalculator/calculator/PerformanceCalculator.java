@@ -213,7 +213,7 @@ public class PerformanceCalculator {
 
         // Give speed buff with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 1.55;
+            speedValue *= 1.7 * (difficultyAttributes.approachRate * 0.11);
         }
 
         // Calculate accuracy assuming the worst case scenario.
