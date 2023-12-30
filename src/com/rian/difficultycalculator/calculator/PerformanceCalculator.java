@@ -64,12 +64,12 @@ public class PerformanceCalculator {
         }
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.85;
+            multiplier *= 1.525;
         }
 
         // Since the Double Time mod doesn't have an overall multiplier with aim and speed buffs, we slightly buff it up
         if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
-            multiplier *= 1.675;
+            multiplier *= 1.45;
         }
 
         // Give rewards for the precise mod since it doesn't have any in the original osu!droid
@@ -161,7 +161,7 @@ public class PerformanceCalculator {
 
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.25 + (difficultyAttributes.approachRate * 0.025) ;
+            aimValue *= 1.25 + (difficultyAttributes.approachRate * 0.0025) ;
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -213,7 +213,7 @@ public class PerformanceCalculator {
 
         // Give speed buff with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 1.25 * (difficultyAttributes.approachRate * 0.11);
+            speedValue *= 1.25 * (difficultyAttributes.approachRate * 0.09);
         }
 
         // Calculate accuracy assuming the worst case scenario.
