@@ -161,7 +161,7 @@ public class PerformanceCalculator {
 
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.3;
+            aimValue *= 1.3 + (difficultyAttributes.approachRate * 0.025) ;
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -213,7 +213,7 @@ public class PerformanceCalculator {
 
         // Give speed buff with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 1.7 * (difficultyAttributes.approachRate * 0.11);
+            speedValue *= 1.275 * (difficultyAttributes.approachRate * 0.11);
         }
 
         // Calculate accuracy assuming the worst case scenario.
