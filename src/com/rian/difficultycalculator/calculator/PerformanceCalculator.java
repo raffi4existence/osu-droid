@@ -308,7 +308,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        (countOk + countMeh + countMiss) / 12;
+                        (countOk + countMeh + countMiss) / 6;
                 );
             }
         }
