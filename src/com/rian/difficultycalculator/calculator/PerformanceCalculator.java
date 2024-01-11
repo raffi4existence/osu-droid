@@ -158,7 +158,12 @@ public class PerformanceCalculator {
         // The longer the circle or slider gap, the higher the pp
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             aimValue *= 1.25 + (difficultyAttributes.approachRate * 0.00375) + ((getAccuracy() * 0.15) / 200);
-        } 
+        }
+
+        // Buff the pp value for aim with double time
+        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
+            aimValue *= 1.2;
+        }
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
@@ -207,9 +212,14 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Give speed buff with relax
+        // Buff the pp value for speed with relax
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             speedValue *= 1.25 * ((difficultyAttributes.approachRate - 0.2) * 0.09);
+        }
+
+        // Buff the pp value for speed with double time since it requires more skills to complete a beatmap with such fast speed
+        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
+            speedValue *= 1.275;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -254,7 +264,7 @@ public class PerformanceCalculator {
 
         // Give a debuff for accuracy since it only requires aim
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.425;
+            accuracyValue *= 0.35;
         }
 
         return accuracyValue;
@@ -298,7 +308,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        (countOk + countMeh + countMiss) / 8
+                        (countOk + countMeh + countMiss) / 12;
                 );
             }
         }
