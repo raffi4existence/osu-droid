@@ -65,14 +65,9 @@ public class PerformanceCalculator {
 
         // Give multiplier for the relax mod
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.5;
+            multiplier *= 1.55;
         }
-
-        // Since the Double Time mod doesn't have an overall multiplier with aim and speed buffs, we slightly buff it up
-        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
-            multiplier *= 1.4;
-        }
-
+        
         // Give rewards for the precise mod since it doesn't have any in the original osu!droid
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
             multiplier *= 1.275;
