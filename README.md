@@ -1,7 +1,7 @@
 # osudroid!relax
 
 ![logo](https://media.discordapp.net/attachments/792900587887919114/1127174982754107483/Untitled164_20230708175009.png)
-[![Official International Discord](https://discordapp.com/api/guilds/1095653998389907468/widget.png?style=shield)](https://discord.gg/kUaSggQP7m)
+[![Official Discord Server](https://discordapp.com/api/guilds/1095653998389907468/widget.png?style=shield)](https://discord.gg/kUaSggQP7m)
 [![Android CI](https://github.com/PayToUse/osudroid-rx/workflows/Android%20CI/badge.svg?branch=master)](https://github.com/PayToUse/osudroid-rx/actions?query=workflow%3A"Android+CI")
 ![GitHub repo size](https://img.shields.io/github/repo-size/PayToUse/osudroid-rx?style=flat-square&label=Repository%20Size)
 ![GitHub contributors](https://img.shields.io/github/contributors/PayToUse/osudroid-rx?style=flat-square&label=Project%20contributors)
@@ -10,15 +10,15 @@
 ![GitHub issues](https://img.shields.io/github/issues/PayToUse/osudroid-rx?style=flat-square&label=Project%20issues)
 
 
-A custom osu!droid build for relax players out there.
+A custom osu!droid build specifically built for relax players out there.
 
 ## All about osu!droid
-osu!droid is a free-to-play circle clicking rhythm game for Android devices, being inspired by osu!. It was a game that was hatched many years ago by the [osu!](https://osu.ppy.sh/home) community. This project is now being developed by a small group of fans and also with the help of foreign friends.
+osu!droid is a free-to-play circle clicking rhythm game for Android devices, which was inspired by osu!. It was a game that was hatched many years ago by the [osu!](https://osu.ppy.sh/home) community. This project is now being developed by a small group of fans and also with the help of foreign friends.
 
 Over time, the game is currently in development, as they add some parities and features to it.
 
 ## All about osu!
-[osu!](https://github.com/ppy/osu) is a free-to-play circle clicking rhythm game for Windows, MacOS and Linux. The game is developed by Dean "peppy" Herbert, and the game updates over the upcoming months.
+[osu!](https://github.com/ppy/osu) is a free-to-play circle clicking rhythm game for Windows, MacOS and Linux. This game is developed by Dean "peppy" Herbert, and it frequently updates with some important bug fixes and additions.
 
 This game took inspiration from iNiS' Osu! Tatakae Ouendan for the Nintendo DS.
 
