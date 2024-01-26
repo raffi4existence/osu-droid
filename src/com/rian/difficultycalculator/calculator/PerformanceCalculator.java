@@ -63,14 +63,9 @@ public class PerformanceCalculator {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
 
-        // Give multiplier for the relax mod
+        // Buff the pp a little bit
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.55;
-        }
-        
-        // Give rewards for the precise mod since it doesn't have any in the original osu!droid
-        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            multiplier *= 1.275;
+            multiplier *= 1.1
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
@@ -82,11 +77,11 @@ public class PerformanceCalculator {
         attributes.flashlight = calculateFlashlightValue();
 
         attributes.total = Math.pow(
-                Math.pow(attributes.aim, 1.0375) +
-                        Math.pow(attributes.speed, 1.0375) +
-                        Math.pow(attributes.accuracy, 1.075) +
+                Math.pow(attributes.aim, 1.15) +
+                        Math.pow(attributes.speed, 1.15) +
+                        Math.pow(attributes.accuracy, 1) +
                         Math.pow(attributes.flashlight, 1.1),
-                1 / 1.05
+                1 / 1.1
         ) * multiplier;
 
         return attributes;
@@ -155,16 +150,6 @@ public class PerformanceCalculator {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // The longer the circle or slider gap, the higher the pp
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.25 + (difficultyAttributes.approachRate * 0.00375) + ((getAccuracy() * 0.15) / 200);
-        }
-
-        // Buff the pp value for aim with double time
-        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
-            aimValue *= 1.2;
-        }
-
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
 
@@ -212,16 +197,6 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Buff the pp value for speed with relax
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 1.25 * ((difficultyAttributes.approachRate - 0.2) * 0.09);
-        }
-
-        // Buff the pp value for speed with double time since it requires more skills to complete a beatmap with such fast speed
-        if (difficultyAttributes.mods.contains(GameMod.MOD_DOUBLETIME)) {
-            speedValue *= 1.275;
-        }
-
         // Calculate accuracy assuming the worst case scenario.
         double relevantTotalDiff = getTotalHits() - difficultyAttributes.speedNoteCount;
         double relevantCountGreat = Math.max(0, countGreat - relevantTotalDiff);
@@ -245,7 +220,7 @@ public class PerformanceCalculator {
         int circleCount = difficultyAttributes.hitCircleCount;
 
         if (circleCount > 0) {
-            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6));
+            betterAccuracyPercentage = Math.max(0, ((countGreat - (getTotalHits() - circleCount)) * 6 + countOk * 2 + countMeh) / (circleCount * 6d));
         }
 
         // Lots of arbitrary values from testing.
@@ -260,11 +235,6 @@ public class PerformanceCalculator {
         }
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
-        }
-
-        // Give a debuff for accuracy since it only requires aim
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.35;
         }
 
         return accuracyValue;
@@ -308,7 +278,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        (countOk + countMeh + countMiss) / 12
+                        countOk + countMeh + countMiss
                 );
             }
         }
@@ -319,4 +289,4 @@ public class PerformanceCalculator {
     private double getComboScalingFactor() {
         return difficultyAttributes.maxCombo <= 0 ? 0 : Math.min(Math.pow(scoreMaxCombo, 0.8) / Math.pow(difficultyAttributes.maxCombo, 0.8), 1);
     }
-}
+            }
