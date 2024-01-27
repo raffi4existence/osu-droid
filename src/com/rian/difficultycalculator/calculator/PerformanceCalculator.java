@@ -65,7 +65,7 @@ public class PerformanceCalculator {
 
         // Buff the pp a little bit
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 1.1
+            multiplier *= 1.1;
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
