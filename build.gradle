@@ -97,7 +97,6 @@ android {
 
         release {
             resValue "string", "app_name", "osudroid!relax"
-            applicationIdSuffix '.rxrelease'
             zipAlignEnabled true
 //            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg', 'proguard-kotlin.pro'
