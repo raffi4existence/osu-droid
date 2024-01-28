@@ -63,8 +63,7 @@ public class PerformanceCalculator {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
 
-        // Buff the pp a little bit
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+        // We buff the pp value since it only focuses on the aim (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             multiplier *= 1.1;
         }
 
@@ -128,6 +127,13 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
+        // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
+        // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.025825
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.025825
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            aimValue *= 1 + (difficultyAttributes.approachRate * 0.0025);
+        }
+
         double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
@@ -169,6 +175,10 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
+        // Debuff the pp value in more than half
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            speedValue *= 0.45;
+        }
 
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
@@ -236,6 +246,10 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
         }
+        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 25%
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            accuracyValue *= 0.75 + (difficultyAttributes.approachRate * 0.001);
+        } 
 
         return accuracyValue;
     }
