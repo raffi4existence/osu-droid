@@ -127,12 +127,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateAimValue() {
-        // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
-        // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.025825
-        // And then we add it to the aim pp value multiplier, and that would be equal to 1.025825
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1 + (difficultyAttributes.approachRate * 0.0025);
-        }
 
         double aimValue = Math.pow(5 * Math.max(1, difficultyAttributes.aimDifficulty / 0.0675) - 4, 3) / 100000;
 
@@ -156,6 +150,13 @@ public class PerformanceCalculator {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
+        // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
+        // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.025825
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.025825
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            aimValue *= 1 + (difficultyAttributes.approachRate * 0.0025);
+        } 
+
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
         double estimateDifficultSliders = difficultyAttributes.sliderCount * 0.15;
 
@@ -175,10 +176,6 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
-        // Debuff the pp value in more than half
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.45;
-        }
 
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
@@ -205,6 +202,11 @@ public class PerformanceCalculator {
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
+        }
+
+        // Debuff the pp value by more than half
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            speedValue *= 0.45;
         }
 
         // Calculate accuracy assuming the worst case scenario.
