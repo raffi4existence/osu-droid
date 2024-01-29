@@ -63,7 +63,8 @@ public class PerformanceCalculator {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
 
-        // We buff the pp value since it only focuses on the aim (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+        // We buff the pp value since it only focuses on the aim 
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             multiplier *= 1.1;
         }
 
@@ -204,9 +205,9 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Debuff the pp value by more than half
+        // Debuff the pp value by 70%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.45;
+            speedValue *= 0.30;
         }
 
         // Calculate accuracy assuming the worst case scenario.
