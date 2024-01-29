@@ -148,7 +148,7 @@ public class PerformanceCalculator {
 
         // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
         // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.025825
-        // And then we add it to the aim pp value multiplier, and that would be equal to 1.025825
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.225825
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             aimValue *= 1.2 + (difficultyAttributes.approachRate * 0.0025);
         } 
@@ -290,7 +290,7 @@ public class PerformanceCalculator {
                 // Clamp miss count to maximum amount of possible breaks.
                 comboBasedMissCount = Math.min(
                         fullComboThreshold / Math.max(1, scoreMaxCombo),
-                        countOk + countMeh + countMiss
+                        (countOk + countMeh + countMiss) / (effectiveMissCount / 2)
                 );
             }
         }
