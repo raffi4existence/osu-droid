@@ -63,6 +63,11 @@ public class PerformanceCalculator {
             multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
         }
 
+        // Debuff pp multiplier with really easy
+        if (difficultyAttributes.mods.contains(GameMod.MOD_REALLYEASY)) {
+            multiplier *= 0.75;
+        }
+
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -147,10 +152,10 @@ public class PerformanceCalculator {
         }
 
         // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
-        // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.025825
-        // And then we add it to the aim pp value multiplier, and that would be equal to 1.225825
+        // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.0387375
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.2387375
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.2 + (difficultyAttributes.approachRate * 0.0025);
+            aimValue *= 1.2 + (difficultyAttributes.approachRate * 0.00375);
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -202,7 +207,7 @@ public class PerformanceCalculator {
 
         // Debuff the pp value by 70%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.30;
+            speedValue *= 0.3;
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -244,10 +249,16 @@ public class PerformanceCalculator {
         if (difficultyAttributes.mods.contains(GameMod.MOD_FLASHLIGHT)) {
             accuracyValue *= 1.02;
         }
+
         // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 25%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
             accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.001);
         } 
+
+        // Multiply the accuracy pp by 25% with precise
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            accuracyValue *= 1.25;
+        }
 
         return accuracyValue;
     }
