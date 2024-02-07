@@ -59,11 +59,12 @@ public class PerformanceCalculator {
     private PerformanceAttributes createPerformanceAttributes() {
         double multiplier = finalMultiplier;
 
+        // Debuff the pp multiplier with the no fail mod by 15%
         if (difficultyAttributes.mods.contains(GameMod.MOD_NOFAIL)) {
-            multiplier *= Math.max(0.9, 1 - 0.02 * effectiveMissCount);
+            multiplier *= 0.85;
         }
 
-        // Debuff pp multiplier with really easy
+        // Debuff pp multiplier with really easy by 25%
         if (difficultyAttributes.mods.contains(GameMod.MOD_REALLYEASY)) {
             multiplier *= 0.75;
         }
@@ -156,11 +157,11 @@ public class PerformanceCalculator {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // We buff the aim pp value by adding the approach rate value multiplied by 0.0025
+        // We buff the aim pp value by 22.5% and by adding the approach rate value multiplied by 0.0025
         // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.0387375
-        // And then we add it to the aim pp value multiplier, and that would be equal to 1.2387375
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.2637375
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.2 + (difficultyAttributes.approachRate * 0.00375);
+            aimValue *= 1.225 + (difficultyAttributes.approachRate * 0.00375);
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -210,9 +211,9 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Debuff the pp value by 70%
+        // Majorly debuff the pp value if the approach rate is lower than 10
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.3;
+            speedValue *= 0.3 / (1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.1);
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -255,9 +256,9 @@ public class PerformanceCalculator {
             accuracyValue *= 1.02;
         }
 
-        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 25%
+        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 30%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.001);
+            accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.005);
         } 
 
         // Multiply the accuracy pp by 75% with precise
