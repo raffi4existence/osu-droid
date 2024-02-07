@@ -68,6 +68,11 @@ public class PerformanceCalculator {
             multiplier *= 0.75;
         }
 
+        // Buff the pp multiplier by 15% with the precise mod
+        if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
+            multiplier *= 1.15;
+        }
+
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -255,9 +260,9 @@ public class PerformanceCalculator {
             accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.001);
         } 
 
-        // Multiply the accuracy pp by 25% with precise
+        // Multiply the accuracy pp by 75% with precise
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            accuracyValue *= 1.25;
+            accuracyValue *= 1.75;
         }
 
         return accuracyValue;
