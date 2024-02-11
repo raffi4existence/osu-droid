@@ -74,6 +74,11 @@ public class PerformanceCalculator {
             multiplier *= 1.15;
         }
 
+        // Debuff the pp multiplier by 5% with the relax mod
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            multiplier *= 0.95;
+        }
+
         PerformanceAttributes attributes = new PerformanceAttributes();
 
         attributes.effectiveMissCount = effectiveMissCount;
@@ -157,11 +162,11 @@ public class PerformanceCalculator {
             aimValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // We buff the aim pp value by 22.5% and by adding the approach rate value multiplied by 0.0025
+        // We buff the aim pp value by 22% and by adding the approach rate value multiplied by 0.0025
         // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.0387375
-        // And then we add it to the aim pp value multiplier, and that would be equal to 1.2637375
+        // And then we add it to the aim pp value multiplier, and that would be equal to 1.2587375
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.225 + (difficultyAttributes.approachRate * 0.00375);
+            aimValue *= 1.22 + (difficultyAttributes.approachRate * 0.00375);
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -213,7 +218,7 @@ public class PerformanceCalculator {
 
         // Majorly debuff the pp value if the approach rate is lower than 10
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.3 / (1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.1);
+            speedValue *= 0.275 / (1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.1);
         }
 
         // Calculate accuracy assuming the worst case scenario.
