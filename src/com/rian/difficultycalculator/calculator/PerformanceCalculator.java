@@ -64,7 +64,7 @@ public class PerformanceCalculator {
             multiplier *= 0.85;
         }
 
-        // Debuff pp multiplier with really easy by 25%
+        // Debuff pp multiplier with the really easy mod by 25%
         if (difficultyAttributes.mods.contains(GameMod.MOD_REALLYEASY)) {
             multiplier *= 0.75;
         }
@@ -74,9 +74,9 @@ public class PerformanceCalculator {
             multiplier *= 1.15;
         }
 
-        // Debuff the pp multiplier by 5% with the relax mod
+        // Debuff the pp multiplier by 2.5% with the relax mod
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 0.95;
+            multiplier *= 0.975;
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
@@ -218,7 +218,7 @@ public class PerformanceCalculator {
 
         // Majorly debuff the pp value if the approach rate is lower than 10
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.275 / (1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.1);
+            speedValue *= 0.275 / (1.1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.125);
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -261,12 +261,12 @@ public class PerformanceCalculator {
             accuracyValue *= 1.02;
         }
 
-        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 30%
+        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 32.5%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.005);
+            accuracyValue *= 0.675 + (difficultyAttributes.approachRate * 0.005);
         } 
 
-        // Multiply the accuracy pp by 75% with precise
+        // Multiply the accuracy pp by 75% with the precise mod
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
             accuracyValue *= 1.75;
         }
