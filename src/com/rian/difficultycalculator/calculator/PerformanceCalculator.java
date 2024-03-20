@@ -218,7 +218,7 @@ public class PerformanceCalculator {
 
         // Majorly debuff the pp value if the approach rate is lower than 10
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.275 / (1.1 + ((10 - difficultyAttributes.approachRate) * 0.1) * 1.125);
+            speedValue *= 0.15 / (1.05 + ((10 - difficultyAttributes.approachRate) * 0.075) * 1.1);
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -261,9 +261,9 @@ public class PerformanceCalculator {
             accuracyValue *= 1.02;
         }
 
-        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 32.5%
+        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 31%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.675 + (difficultyAttributes.approachRate * 0.005);
+            accuracyValue *= 0.69 + (difficultyAttributes.approachRate * 0.005);
         } 
 
         // Multiply the accuracy pp by 75% with the precise mod
@@ -284,6 +284,11 @@ public class PerformanceCalculator {
         if (effectiveMissCount > 0) {
             // Penalize misses by assessing # of misses relative to the total # of objects. Default a 3% reduction for any # of misses.
             flashlightValue *= 0.97 * Math.pow(1 - Math.pow(effectiveMissCount / getTotalHits(), 0.775), Math.pow(effectiveMissCount, 0.875));
+        }
+
+        // Since that flashlight is only for players who can memorize various beatmaps, we buff the value by 5%
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            flashlightValue *= 1.05;
         }
 
         flashlightValue *= getComboScalingFactor();
