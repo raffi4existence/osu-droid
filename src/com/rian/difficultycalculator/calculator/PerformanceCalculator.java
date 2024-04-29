@@ -166,7 +166,7 @@ public class PerformanceCalculator {
         // For example, if the approach rate is 10.33 with double time, 10.33 * 0.0025 = 0.0387375
         // And then we add it to the aim pp value multiplier, and that would be equal to 1.2587375
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            aimValue *= 1.22 + (difficultyAttributes.approachRate * 0.00375);
+            aimValue *= 1.225 + (difficultyAttributes.approachRate * 0.00375);
         } 
 
         // We assume 15% of sliders in a map are difficult since there's no way to tell from the performance calculator.
@@ -216,11 +216,6 @@ public class PerformanceCalculator {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
         }
 
-        // Majorly debuff the pp value if the approach rate is lower than 10
-        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            speedValue *= 0.15 / (1.05 + ((10 - difficultyAttributes.approachRate) * 0.075) * 1.1);
-        }
-
         // Calculate accuracy assuming the worst case scenario.
         double relevantTotalDiff = getTotalHits() - difficultyAttributes.speedNoteCount;
         double relevantCountGreat = Math.max(0, countGreat - relevantTotalDiff);
@@ -263,7 +258,7 @@ public class PerformanceCalculator {
 
         // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 31%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.69 + (difficultyAttributes.approachRate * 0.005);
+            accuracyValue *= 0.695 + (difficultyAttributes.approachRate * 0.005);
         } 
 
         // Multiply the accuracy pp by 75% with the precise mod
