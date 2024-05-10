@@ -74,9 +74,9 @@ public class PerformanceCalculator {
             multiplier *= 1.15;
         }
 
-        // Debuff the pp multiplier by 2.5% with the relax mod
+        // Buff the pp multiplier up by 2.5% with the relax mod
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            multiplier *= 0.975;
+            multiplier *= 1.025;
         }
 
         PerformanceAttributes attributes = new PerformanceAttributes();
@@ -188,7 +188,7 @@ public class PerformanceCalculator {
     }
 
     private double calculateSpeedValue() {
-
+        
         double speedValue = Math.pow(5 * Math.max(1, difficultyAttributes.speedDifficulty / 0.0675) - 4, 3) / 100000;
 
         // Longer maps are worth more
@@ -214,6 +214,11 @@ public class PerformanceCalculator {
 
         if (difficultyAttributes.mods.contains(GameMod.MOD_HIDDEN)) {
             speedValue *= 1 + 0.04 * (12 - difficultyAttributes.approachRate);
+        }
+
+        // Speed pp will remain by 1% due to most players requesting for an update due to the pp record being demolished several times (with some shit idfk)
+        if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
+            speedValue *= 0.01 + ((difficultyAttributes.overallDifficulty / 125) ^ 1.1);
         }
 
         // Calculate accuracy assuming the worst case scenario.
@@ -256,14 +261,14 @@ public class PerformanceCalculator {
             accuracyValue *= 1.02;
         }
 
-        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 31%
+        // Since most relax players wanted to include the accuracy value, we debuff the accuracy pp value by 30%
         if (difficultyAttributes.mods.contains(GameMod.MOD_RELAX)) {
-            accuracyValue *= 0.695 + (difficultyAttributes.approachRate * 0.005);
+            accuracyValue *= 0.7 + (difficultyAttributes.approachRate * 0.005);
         } 
 
-        // Multiply the accuracy pp by 75% with the precise mod
+        // Multiply the accuracy pp by 75% with the precise mod (with od)
         if (difficultyAttributes.mods.contains(GameMod.MOD_PRECISE)) {
-            accuracyValue *= 1.75;
+            accuracyValue *= 1.75 * (0.5 - (diffcultyAttributes.overallDifficulty * (difficultyAttributes.overallDifficulty * 0.005)));
         }
 
         return accuracyValue;
