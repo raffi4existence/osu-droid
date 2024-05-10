@@ -25,3 +25,11 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         arguments: build
+
+    - name: Assemble the Release .apk
+      run: ./gradlew assembleRelease
+    - name: Create and Release the main artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: osudroid
+        path: build/outputs/apk/release/app-release.apk
