@@ -98,7 +98,8 @@ android {
         }
 
         release {
-            resValue "string", "app_name", "osu!droid"
+            resValue "string", "app_name", "osu!droid-fl"
+            applicationIdSuffix '.flpatch'
 //            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard.cfg', 'proguard-kotlin.pro'
             signingConfig signingConfigs.release
@@ -150,7 +151,7 @@ android {
     android.applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
             def releaseTime = new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
-            def fileName = "osu!droid-${defaultConfig.versionName}-${variant.buildType.name}-${releaseTime}.apk"
+            def fileName = "app-${variant.buildType.name}.apk"
             outputFileName = fileName
         }
     }
