@@ -7,7 +7,7 @@ import org.anddev.andengine.entity.modifier.AlphaModifier;
 
 
 public class FlashLightDimLayerSprite extends FlashlightAreaSizedSprite {
-    public final float BASE_SLIDER_DIM_ALPHA = 0.8f;
+    public final float BASE_SLIDER_DIM_ALPHA = 0f;
 
     public FlashLightDimLayerSprite() {
         super(TextureHelper.create1xRegion(Color.BLACK));
@@ -17,6 +17,6 @@ public class FlashLightDimLayerSprite extends FlashlightAreaSizedSprite {
 
     public void onTrackingSliders(boolean isTrackingSliders) {
        float newAlpha = isTrackingSliders? BASE_SLIDER_DIM_ALPHA : 0;
-       this.registerEntityModifier(new AlphaModifier(0.05f, this.getAlpha(), newAlpha));
+       this.registerEntityModifier(new AlphaModifier(0f, this.getAlpha(), newAlpha));
     }
 }
